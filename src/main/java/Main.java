@@ -15,28 +15,17 @@ public class Main {
         try {
             serverSocket = new ServerSocket(port);
             serverSocket.setReuseAddress(true);
-
             while (!executorService.isShutdown()) {
                 try {
                     // Wait for connection from client.
                     final Socket clientSocket = serverSocket.accept();
-                    executorService.execute(() -> {
-                        try {
-                            processCommand(clientSocket);
-                        } finally {
-                            try {
-                                clientSocket.close();
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    executorService.execute(new ClientHandler(clientSocket));
                 } catch (IOException e) {
                     if (!executorService.isShutdown()) {
                         System.err.println("Error accepting client connection: " + e.getMessage());
                     }
                 }
+
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -49,26 +38,6 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    private static void processCommand(Socket clientSocket) {
-        try {
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
-
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(clientSocket.getOutputStream()));
-
-            String input;
-            while ((input = reader.readLine()) != null) {
-                if (input.toLowerCase().startsWith("ping")) {
-                    writer.write("+PONG\r\n");
-                    writer.flush();
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
