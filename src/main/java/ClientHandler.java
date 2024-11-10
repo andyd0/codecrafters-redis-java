@@ -1,18 +1,19 @@
 import command.Command;
 import command.CommandFactory;
+import model.Data;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private final CommandFactory commandFactory;
 
-
-    public ClientHandler(Socket clientSocket) {
+    public ClientHandler(Socket clientSocket, ConcurrentHashMap<String, Data> dataStore) {
         this.clientSocket = clientSocket;
-        this.commandFactory = new CommandFactory();
+        this.commandFactory = new CommandFactory(dataStore);
     }
 
     @Override
