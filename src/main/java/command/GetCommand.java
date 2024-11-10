@@ -21,10 +21,10 @@ class GetCommand implements Command {
         String key = (String) arguments.get(2);
         Data data = dataStore.get(key);
 
-        if (data == null) {
+        if (data == null || data.getExpiry() < System.currentTimeMillis()) {
             writer.write("$-1\r\n");
         } else {
-            writer.write(data.value());
+            writer.write(data.getValue());
         }
     }
 }
