@@ -14,16 +14,15 @@ public class Main {
         int port = 6379;
 
         String dir = "";
-        String fileName = "";
+        String dbFileName = "";
         if (args.length > 0) {
             dir = args[1];
-            fileName = args[3];
+            dbFileName = args[3];
         };
 
-        ConcurrentHashMap<String, Data> dataStore = GlobalStore.getInstance().getDataStore();
         ConcurrentHashMap<String, String> config = GlobalStore.getInstance().getConfig();
         config.put("dir", dir);
-        config.put("fileName", fileName);
+        config.put("dbFileName", dbFileName);
 
         // Using ExecutorService to reuse threads
         ExecutorService executorService = Executors.newFixedThreadPool(10);

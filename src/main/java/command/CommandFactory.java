@@ -18,6 +18,7 @@ public class CommandFactory {
             case "set" -> new SetCommand(command);
             case "get" -> new GetCommand(command);
             case "config" -> new ConfigCommand(command);
+            case "keys" -> new KeysCommand(command);
             default -> null;
         };
     }
