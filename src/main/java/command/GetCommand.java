@@ -1,6 +1,7 @@
 package command;
 
 import model.Data;
+import store.GlobalStore;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,12 +9,11 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 class GetCommand implements Command {
-    private final ConcurrentHashMap<String, Data> dataStore;
+    ConcurrentHashMap<String, Data> dataStore = GlobalStore.getInstance().getDataStore();
     private final List<Object> arguments;
 
-    public GetCommand(List<Object> arguments, ConcurrentHashMap<String, Data> dataStore) {
+    public GetCommand(List<Object> arguments) {
         this.arguments = arguments;
-        this.dataStore = dataStore;
     }
 
     @Override

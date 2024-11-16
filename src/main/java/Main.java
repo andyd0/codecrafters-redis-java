@@ -1,4 +1,5 @@
 import model.Data;
+import store.GlobalStore;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -12,7 +13,18 @@ public class Main {
         ServerSocket serverSocket = null;
         int port = 6379;
 
-        ConcurrentHashMap<String, Data> dataStore = new ConcurrentHashMap<>();
+        String dir = "";
+        String fileName = "";
+        if (args.length > 0) {
+            dir = args[1];
+            fileName = args[3];
+        };
+
+        ConcurrentHashMap<String, Data> dataStore = GlobalStore.getInstance().getDataStore();
+        ConcurrentHashMap<String, String> config = GlobalStore.getInstance().getConfig();
+        config.put("dir", dir);
+        config.put("fileName", fileName);
+
         // Using ExecutorService to reuse threads
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -23,7 +35,7 @@ public class Main {
                 try {
                     // Wait for connection from client.
                     final Socket clientSocket = serverSocket.accept();
-                    executorService.execute(new ClientHandler(clientSocket, dataStore));
+                    executorService.execute(new ClientHandler(clientSocket));
                 } catch (IOException e) {
                     if (!executorService.isShutdown()) {
                         System.err.println("Error accepting client connection: " + e.getMessage());
