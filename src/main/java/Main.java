@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
+    private static final ConcurrentHashMap<String, String> config = GlobalStore.getInstance().getConfig();
+    private static final ConcurrentHashMap<String, Data> dataStore = GlobalStore.getInstance().getDataStore();
+
     public static void main(String[] args){
         ServerSocket serverSocket = null;
         int port = 6379;
@@ -18,11 +21,12 @@ public class Main {
         if (args.length > 0) {
             dir = args[1];
             dbFileName = args[3];
+
+            config.put("dir", dir);
+            config.put("dbFileName", dbFileName);
         };
 
-        ConcurrentHashMap<String, String> config = GlobalStore.getInstance().getConfig();
-        config.put("dir", dir);
-        config.put("dbFileName", dbFileName);
+        GlobalStore.buildDataStore();
 
         // Using ExecutorService to reuse threads
         ExecutorService executorService = Executors.newFixedThreadPool(10);

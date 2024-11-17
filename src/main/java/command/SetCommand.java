@@ -19,11 +19,7 @@ class SetCommand implements Command {
     @Override
     public void execute(BufferedWriter writer) throws IOException {
         String key = (String) arguments.get(2);
-        String value = String.join("\r\n", arguments.stream()
-                .skip(3)
-                .limit(2)
-                .map(Object::toString)
-                .toArray(String[]::new)) + "\r\n";
+        String value = (String) arguments.get(4);
 
         Data data;
         if (arguments.size() > 6 && ((String) arguments.get(6)).equalsIgnoreCase("PX")) {

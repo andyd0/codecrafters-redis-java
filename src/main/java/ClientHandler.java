@@ -1,5 +1,6 @@
 import command.Command;
 import command.CommandFactory;
+import utils.Parser;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,7 +37,7 @@ public class ClientHandler implements Runnable {
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
 
             List<Object> fullCommand;
-            while ((fullCommand = Parser.parserCommand(reader)) != null) {
+            while ((fullCommand = Parser.parseCommand(reader)) != null) {
                 Command command = commandFactory.createCommand(fullCommand);
                 if (command == null) {
                     break;

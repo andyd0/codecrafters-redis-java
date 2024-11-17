@@ -1,9 +1,6 @@
 package command;
 
-import model.Data;
-
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandFactory {
     public Command createCommand(List<Object> command) {
@@ -18,7 +15,7 @@ public class CommandFactory {
             case "set" -> new SetCommand(command);
             case "get" -> new GetCommand(command);
             case "config" -> new ConfigCommand(command);
-            case "keys" -> new KeysCommand(command);
+            case "keys" -> new KeysCommand();
             default -> null;
         };
     }

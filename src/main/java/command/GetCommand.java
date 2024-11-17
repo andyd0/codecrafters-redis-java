@@ -2,6 +2,7 @@ package command;
 
 import model.Data;
 import store.GlobalStore;
+import utils.ResponseBuilder;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,9 +23,9 @@ class GetCommand implements Command {
         Data data = dataStore.get(key);
 
         if (data == null || data.getExpiry() < System.currentTimeMillis()) {
-            writer.write("$-1\r\n");
+            writer.write(ResponseBuilder.buildNullBulkString());
         } else {
-            writer.write(data.getValue());
+            writer.write(ResponseBuilder.buildBulkString(data.getValue()));
         }
     }
 }

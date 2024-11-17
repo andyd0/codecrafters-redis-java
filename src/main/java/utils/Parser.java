@@ -1,3 +1,5 @@
+package utils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ public class Parser {
     private static final char BULK_STRING_PREFIX = '$';
     private static final char INTEGER_PREFIX = ':';
 
-    public static List<Object> parserCommand(BufferedReader input) {
+    public static List<Object> parseCommand(BufferedReader input) {
         try {
             String firstLine = input.readLine();
             if (firstLine == null) {
